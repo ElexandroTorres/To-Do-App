@@ -39,9 +39,12 @@ class AddTaskBottomSheet extends StatelessWidget {
                   color: Colors.lightBlueAccent,
                   fontSize: 16,
                 ),
+                keyboardType: TextInputType.name,
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pop(context);
+                },
                 child: Text('Adicionar'),
               ),
             ],

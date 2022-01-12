@@ -1,7 +1,18 @@
 import 'package:flutter/material.dart';
 
 class TaskItem extends StatelessWidget {
-  const TaskItem({Key? key}) : super(key: key);
+  final String taskName;
+  final DateTime? taskDate;
+  final bool taskIsComplete;
+  final Function checkBoxChanged;
+
+  const TaskItem(
+      {Key? key,
+      required this.taskName,
+      this.taskDate,
+      this.taskIsComplete = false,
+      required this.checkBoxChanged})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -9,7 +20,11 @@ class TaskItem extends StatelessWidget {
       key: Key(DateTime.now().millisecondsSinceEpoch.toString()),
       background: Container(
         padding: EdgeInsets.all(16),
-        color: Colors.redAccent,
+        decoration: ShapeDecoration(
+          color: Colors.redAccent,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        ),
         child: Align(
           alignment: Alignment.centerLeft,
           child: Icon(
@@ -20,15 +35,14 @@ class TaskItem extends StatelessWidget {
       ),
       direction: DismissDirection.startToEnd,
       child: CheckboxListTile(
-        title: Text('titulo'),
-        value: true,
-        secondary: CircleAvatar(
-          child: Icon(Icons.check),
-        ),
-        onChanged: (value) {
-          //função
-        },
-      ),
+          activeColor: Colors.lightBlueAccent,
+          onChanged: (value) => checkBoxChanged(value),
+          value: taskIsComplete,
+          secondary: Icon(Icons.ac_unit),
+          title: Text(taskName),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          subtitle: Text(taskDate != null ? taskDate.toString() : '')),
       onDismissed: (direction) {},
     );
   }
