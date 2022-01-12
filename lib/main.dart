@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:to_do_app/ui/widgets/add_task_bottom_sheet.dart';
+import 'package:to_do_app/ui/widgets/task_item.dart';
 
 void main() {
   runApp(const ToDoApp());
@@ -10,35 +13,16 @@ class ToDoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      title: 'My ToDo App',
       home: HomePage(),
     );
   }
 }
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
-
-  Widget builtBottomSheet(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(32),
-          topRight: Radius.circular(32),
-        ),
-      ),
-      child: Column(
-        children: [
-          Text('Add task'),
-          TextField(),
-          TextButton(
-            onPressed: () {},
-            child: Text('Adicionar'),
-          ),
-        ],
-      ),
-    );
-  }
+  List _todoList = [];
+  Map<String, dynamic> _lastRemoved = Map();
+  int _lastRemovedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -79,6 +63,7 @@ class HomePage extends StatelessWidget {
                 ),
                 child: ListView(
                   children: [
+                    /*
                     ListTile(
                         title: Text('teste'),
                         leading: Icon(Icons.h_mobiledata),
@@ -86,6 +71,9 @@ class HomePage extends StatelessWidget {
                           onChanged: (value) => {},
                           value: false,
                         )),
+                        */
+                    TaskItem(),
+                    TaskItem(),
                   ],
                 ),
               ),
@@ -96,7 +84,17 @@ class HomePage extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.lightBlueAccent,
         onPressed: () {
-          showModalBottomSheet(context: context, builder: builtBottomSheet);
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            backgroundColor: Colors.transparent,
+            builder: (context) => SingleChildScrollView(
+              child: Container(
+                  padding: EdgeInsets.only(
+                      bottom: MediaQuery.of(context).viewInsets.bottom),
+                  child: AddTaskBottomSheet()),
+            ),
+          );
         },
         child: Icon(Icons.add),
       ),
