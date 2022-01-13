@@ -1,44 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:to_do_app/model/task.dart';
 import 'package:to_do_app/ui/widgets/task_item.dart';
+import 'package:provider/provider.dart';
+import 'package:to_do_app/model/task_data.dart';
 
-class TaskList extends StatefulWidget {
-  const TaskList({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  State<TaskList> createState() => _TaskListState();
-}
-
-class _TaskListState extends State<TaskList> {
-  List<Task> tasks = [
-    Task(name: 'comprar ovos', isComplete: true),
-    Task(name: 'Limpar a casa'),
-    Task(name: 'Cozinhas'),
-    Task(name: 'comprar ovos'),
-    Task(name: 'Limpar a casa', isComplete: true),
-    Task(name: 'Cozinhas'),
-    Task(name: 'comprar ovos', isComplete: true),
-    Task(name: 'Limpar a casa'),
-    Task(name: 'Cozinhas'),
-  ];
-
+class TaskList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
       itemBuilder: (context, index) {
         return TaskItem(
-          taskName: tasks[index].name,
-          taskIsComplete: tasks[index].isComplete,
+          taskName: Provider.of<TaskData>(context).tasks[index].name,
+          taskIsComplete:
+              Provider.of<TaskData>(context).tasks[index].isComplete,
           checkBoxChanged: (value) {
+            /*
             setState(() {
-              tasks[index].changeTaskState();
+              Provider.of<TaskData>(context).tasks[index].changeTaskState();
             });
+            */
           },
         );
       },
-      itemCount: tasks.length,
+      itemCount: Provider.of<TaskData>(context).tasks.length,
     );
   }
 }
