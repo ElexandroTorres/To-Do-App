@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:to_do_app/model/task.dart';
+import 'package:to_do_app/model/task_data.dart';
 
 class AddTaskBottomSheet extends StatelessWidget {
   const AddTaskBottomSheet({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    String newTaskTitle = '';
     return Container(
       decoration: BoxDecoration(
         color: Color(0xFF737373),
@@ -40,9 +44,15 @@ class AddTaskBottomSheet extends StatelessWidget {
                   fontSize: 16,
                 ),
                 keyboardType: TextInputType.name,
+                onChanged: (newTask) {
+                  newTaskTitle = newTask;
+                  print(newTaskTitle);
+                },
               ),
               TextButton(
                 onPressed: () {
+                  Provider.of<TaskData>(context, listen: false)
+                      .addTask(newTaskTitle);
                   Navigator.pop(context);
                 },
                 child: Text('Adicionar'),

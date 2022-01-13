@@ -52,7 +52,7 @@ class _TaskPageState extends State<TaskPage> {
                         fontWeight: FontWeight.w600),
                   ),
                   Text(
-                    '${Provider.of<TaskData>(context).tasks.length} tarefas',
+                    '${Provider.of<TaskData>(context).taskCount} Tarefas',
                   ),
                 ],
               ),
