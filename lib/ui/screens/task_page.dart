@@ -2,14 +2,14 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
+
 import 'package:to_do_app/model/task.dart';
 import 'package:to_do_app/model/task_data.dart';
+import 'package:to_do_app/services/data_storage.dart';
 import 'package:to_do_app/ui/widgets/add_task_bottom_sheet.dart';
 import 'package:to_do_app/ui/widgets/task_list.dart';
 import 'dart:io';
 import 'package:provider/provider.dart';
-import 'package:to_do_app/model/task_data.dart';
 
 class TaskPage extends StatefulWidget {
   @override
@@ -17,18 +17,19 @@ class TaskPage extends StatefulWidget {
 }
 
 class _TaskPageState extends State<TaskPage> {
-  List<Task> _todoList = [];
+  //List<Task> _todoList = [];
   Map<String, dynamic> _lastRemoved = Map();
   int _lastRemovedIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    _readData().then((data) {
-      setState(() {
-        _todoList = json.decode(data);
-      });
+    /*
+    DataStorage().readData().then((data) {
+      print('entrou aki!!');
+      Provider.of<TaskData>(context).setList(json.decode(data));
     });
+    */
   }
 
   @override
@@ -41,18 +42,38 @@ class _TaskPageState extends State<TaskPage> {
           children: [
             Container(
               padding: EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'My To-Do',
-                    style: TextStyle(
-                        fontSize: 32,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w600),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'My To-Do',
+                        style: TextStyle(
+                            fontSize: 32,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      SizedBox(
+                        height: 8,
+                      ),
+                      Text(
+                        '${Provider.of<TaskData>(context).taskCount} Tarefas',
+                        style: TextStyle(
+                          fontStyle: FontStyle.italic,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                    ],
                   ),
-                  Text(
-                    '${Provider.of<TaskData>(context).taskCount} Tarefas',
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Icon(
+                      Icons.list,
+                      size: 32,
+                      color: Colors.white,
+                    ),
                   ),
                 ],
               ),
@@ -93,21 +114,5 @@ class _TaskPageState extends State<TaskPage> {
         child: Icon(Icons.add),
       ),
     );
-  }
-
-  Future<File> _getFile() async {
-    final directory = await getApplicationDocumentsDirectory();
-    return File('${directory.path}/data.json');
-  }
-
-  Future<File> _saveData() async {
-    String data = json.encode(_todoList);
-    final file = await _getFile();
-    return file.writeAsString(data);
-  }
-
-  Future<String> _readData() async {
-    final file = await _getFile();
-    return file.readAsString();
   }
 }

@@ -17,6 +17,9 @@ class TaskList extends StatelessWidget {
               checkBoxChanged: (value) {
                 taskData.updateTask(taskData.tasks[index]);
               },
+              dismisibleDelete: (direction) {
+                taskData.deleteTask(taskData.tasks[index]);
+              },
             );
           },
           itemCount: taskData.taskCount,

@@ -46,13 +46,13 @@ class AddTaskBottomSheet extends StatelessWidget {
                 keyboardType: TextInputType.name,
                 onChanged: (newTask) {
                   newTaskTitle = newTask;
-                  print(newTaskTitle);
                 },
               ),
               TextButton(
                 onPressed: () {
                   Provider.of<TaskData>(context, listen: false)
                       .addTask(newTaskTitle);
+
                   Navigator.pop(context);
                 },
                 child: Text('Adicionar'),
