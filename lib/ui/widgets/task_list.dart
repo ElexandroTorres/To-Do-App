@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:to_do_app/model/task.dart';
 import 'package:to_do_app/ui/widgets/task_item.dart';
 import 'package:provider/provider.dart';
 import 'package:to_do_app/model/task_data.dart';

@@ -1,17 +1,16 @@
-import 'dart:async';
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-
-import 'package:to_do_app/model/task.dart';
 import 'package:to_do_app/model/task_data.dart';
 import 'package:to_do_app/services/data_storage.dart';
 import 'package:to_do_app/ui/widgets/add_task_bottom_sheet.dart';
 import 'package:to_do_app/ui/widgets/task_list.dart';
-import 'dart:io';
 import 'package:provider/provider.dart';
 
 class TaskPage extends StatefulWidget {
+  final DataStorage dataStorage;
+
+  const TaskPage({Key? key, required this.dataStorage}) : super(key: key);
+
   @override
   State<TaskPage> createState() => _TaskPageState();
 }
@@ -24,6 +23,11 @@ class _TaskPageState extends State<TaskPage> {
   @override
   void initState() {
     super.initState();
+    widget.dataStorage.readData().then((String data) {
+      setState(() {
+        Provider.of<TaskData>(context).setList(jsonDecode(data));
+      });
+    });
     /*
     DataStorage().readData().then((data) {
       print('entrou aki!!');
